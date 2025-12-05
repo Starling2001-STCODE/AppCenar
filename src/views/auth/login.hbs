@@ -1,0 +1,74 @@
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-3 text-center">Iniciar sesión</h1>
+
+        {{#if authError}}
+          <div class="alert alert-danger">
+            {{authError}}
+          </div>
+        {{/if}}
+
+        {{#if errors}}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {{#if errors.identity}}
+                <li>{{errors.identity.msg}}</li>
+              {{/if}}
+              {{#if errors.password}}
+                <li>{{errors.password.msg}}</li>
+              {{/if}}
+            </ul>
+          </div>
+        {{/if}}
+
+        <form action="/login" method="post" novalidate>
+          <div class="mb-3">
+            <label for="identity" class="form-label">Usuario o correo</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.identity}}is-invalid{{/if}}"
+              id="identity"
+              name="identity"
+              placeholder="usuario o correo"
+              value="{{old.identity}}"
+            />
+            {{#if errors.identity}}
+              <div class="invalid-feedback">
+                {{errors.identity.msg}}
+              </div>
+            {{/if}}
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control {{#if errors.password}}is-invalid{{/if}}"
+              id="password"
+              name="password"
+            />
+            {{#if errors.password}}
+              <div class="invalid-feedback">
+                {{errors.password.msg}}
+              </div>
+            {{/if}}
+          </div>
+
+          <div class="d-grid gap-2 mb-3">
+            <button type="submit" class="btn btn-primary">
+              Ingresar
+            </button>
+          </div>
+
+          <div class="text-center">
+            <a href="/register/cliente" class="d-block">Registrarse como cliente o delivery</a>
+            <a href="/register/comercio" class="d-block">Registrarse como comercio</a>
+            <a href="/password/forgot" class="d-block">Restablecer contraseña</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
