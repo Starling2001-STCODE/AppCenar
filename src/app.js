@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
 app.engine(
   "hbs",
@@ -24,6 +25,11 @@ app.engine(
     defaultLayout: "main",
     layoutsDir: path.join(__dirname, "views", "layouts"),
     partialsDir: path.join(__dirname, "views", "partials"),
+    helpers: {
+      ifEquals: function (a, b, options) {
+        return String(a) === String(b) ? options.fn(this) : options.inverse(this);
+      },
+    },
   })
 );
 app.set("view engine", "hbs");

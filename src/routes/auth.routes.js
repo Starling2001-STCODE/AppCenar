@@ -1,98 +1,59 @@
 const express = require("express");
-const { validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const { loginValidator } = require("../validators/authValidators");
-const { User } = require("../models/User");
+const {
+  loginValidator,
+  registerClientDeliveryValidator,
+  registerCommerceValidator,
+  forgotPasswordValidator,
+  resetPasswordValidator,
+} = require("../validators/authValidators");
+const { uploadUserAvatar, uploadCommerceLogo } = require("../config/multer");
+const { authController } = require("../controllers/authController");
 
 const router = express.Router();
 
-router.get("/login", (req, res) => {
-  res.render("auth/login", {
-    title: "Iniciar sesión - AppCenar",
-    errors: {},
-    old: {},
-    authError: null,
-  });
-});
+router.get("/login", authController.getLogin);
+router.post("/login", loginValidator, authController.postLogin);
 
-router.post("/login", loginValidator, async (req, res) => {
-  const errors = validationResult(req);
+router.get("/register/cliente", authController.getRegisterCliente);
+router.get("/register/delivery", authController.getRegisterDelivery);
 
-  if (!errors.isEmpty()) {
-    return res.status(422).render("auth/login", {
-      title: "Iniciar sesión - AppCenar",
-      errors: errors.mapped(),
-      old: {
-        identity: req.body.identity,
-      },
-      authError: null,
-    });
-  }
+router.post(
+  "/register/cliente",
+  uploadUserAvatar.single("avatar"),
+  registerClientDeliveryValidator,
+  authController.postRegisterCliente
+);
 
-  const identity = req.body.identity.trim().toLowerCase();
-  const password = req.body.password;
+router.post(
+  "/register/delivery",
+  uploadUserAvatar.single("avatar"),
+  registerClientDeliveryValidator,
+  authController.postRegisterDelivery
+);
 
-  const user = await User.findOne({
-    $or: [{ username: identity }, { email: identity }],
-  });
+router.get("/register/comercio", authController.getRegisterComercio);
 
-  if (!user) {
-    return res.status(401).render("auth/login", {
-      title: "Iniciar sesión - AppCenar",
-      errors: {},
-      old: {
-        identity: req.body.identity,
-      },
-      authError: "Usuario o contraseña incorrectos",
-    });
-  }
+router.post(
+  "/register/comercio",
+  uploadCommerceLogo.single("logo"),
+  registerCommerceValidator,
+  authController.postRegisterComercio
+);
 
-  if (!user.activo) {
-    return res.status(403).render("auth/login", {
-      title: "Iniciar sesión - AppCenar",
-      errors: {},
-      old: {
-        identity: req.body.identity,
-      },
-      authError: "Tu cuenta está inactiva. Revisa tu correo o contacta soporte.",
-    });
-  }
+router.get("/activate/:token", authController.getActivate);
 
-  const isMatch = await bcrypt.compare(password, user.passwordHash);
+router.get("/password/forgot", authController.getForgotPassword);
+router.post(
+  "/password/forgot",
+  forgotPasswordValidator,
+  authController.postForgotPassword
+);
 
-  if (!isMatch) {
-    return res.status(401).render("auth/login", {
-      title: "Iniciar sesión - AppCenar",
-      errors: {},
-      old: {
-        identity: req.body.identity,
-      },
-      authError: "Usuario o contraseña incorrectos",
-    });
-  }
-
-  req.session.user = {
-    id: user._id.toString(),
-    username: user.username,
-    email: user.email,
-    rol: user.rol,
-    nombre: user.nombre,
-    activo: user.activo,
-  };
-
-  let redirectTo = "/";
-
-  if (user.rol === "cliente") {
-    redirectTo = "/cliente/home";
-  } else if (user.rol === "comercio") {
-    redirectTo = "/comercio/home";
-  } else if (user.rol === "delivery") {
-    redirectTo = "/delivery/home";
-  } else if (user.rol === "admin") {
-    redirectTo = "/admin/dashboard";
-  }
-
-  res.redirect(redirectTo);
-});
+router.get("/password/reset/:token", authController.getResetPassword);
+router.post(
+  "/password/reset/:token",
+  resetPasswordValidator,
+  authController.postResetPassword
+);
 
 module.exports = router;

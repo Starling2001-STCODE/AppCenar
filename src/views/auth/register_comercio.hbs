@@ -1,0 +1,189 @@
+<h1 class="h4 mb-3 text-center">
+  Registro Comercio AppCenar
+</h1>
+
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        {{#if authError}}
+          <div class="alert alert-danger">
+            {{authError}}
+          </div>
+        {{/if}}
+
+        {{#if errors}}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {{#if errors.nombreComercio}}
+                <li>{{errors.nombreComercio.msg}}</li>
+              {{/if}}
+              {{#if errors.telefono}}
+                <li>{{errors.telefono.msg}}</li>
+              {{/if}}
+              {{#if errors.email}}
+                <li>{{errors.email.msg}}</li>
+              {{/if}}
+              {{#if errors.tipoComercioId}}
+                <li>{{errors.tipoComercioId.msg}}</li>
+              {{/if}}
+              {{#if errors.horarioApertura}}
+                <li>{{errors.horarioApertura.msg}}</li>
+              {{/if}}
+              {{#if errors.horarioCierre}}
+                <li>{{errors.horarioCierre.msg}}</li>
+              {{/if}}
+              {{#if errors.username}}
+                <li>{{errors.username.msg}}</li>
+              {{/if}}
+              {{#if errors.password}}
+                <li>{{errors.password.msg}}</li>
+              {{/if}}
+              {{#if errors.passwordConfirmation}}
+                <li>{{errors.passwordConfirmation.msg}}</li>
+              {{/if}}
+            </ul>
+          </div>
+        {{/if}}
+
+        <form
+          action="/register/comercio"
+          method="post"
+          enctype="multipart/form-data"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="nombreComercio" class="form-label">Nombre del comercio</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.nombreComercio}}is-invalid{{/if}}"
+              id="nombreComercio"
+              name="nombreComercio"
+              value="{{old.nombreComercio}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.telefono}}is-invalid{{/if}}"
+              id="telefono"
+              name="telefono"
+              value="{{old.telefono}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control {{#if errors.email}}is-invalid{{/if}}"
+              id="email"
+              name="email"
+              value="{{old.email}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="logo" class="form-label">Logo del comercio</label>
+            <input
+              type="file"
+              class="form-control"
+              id="logo"
+              name="logo"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="horarioApertura" class="form-label">Horario apertura</label>
+              <input
+                type="time"
+                class="form-control {{#if errors.horarioApertura}}is-invalid{{/if}}"
+                id="horarioApertura"
+                name="horarioApertura"
+                value="{{old.horarioApertura}}"
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="horarioCierre" class="form-label">Horario cierre</label>
+              <input
+                type="time"
+                class="form-control {{#if errors.horarioCierre}}is-invalid{{/if}}"
+                id="horarioCierre"
+                name="horarioCierre"
+                value="{{old.horarioCierre}}"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="tipoComercioId" class="form-label">Tipo de comercio</label>
+            <select
+              class="form-select {{#if errors.tipoComercioId}}is-invalid{{/if}}"
+              id="tipoComercioId"
+              name="tipoComercioId"
+            >
+              <option value="">Seleccione un tipo</option>
+              {{#each tiposComercio}}
+                <option
+                  value="{{this._id}}"
+                  {{#ifEquals ../old.tipoComercioId this._id}}selected{{/ifEquals}}
+                >
+                  {{this.nombre}}
+                </option>
+              {{/each}}
+            </select>
+          </div>
+
+          <hr class="my-3" />
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.username}}is-invalid{{/if}}"
+              id="username"
+              name="username"
+              value="{{old.username}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control {{#if errors.password}}is-invalid{{/if}}"
+              id="password"
+              name="password"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="passwordConfirmation" class="form-label">
+              Confirmar contraseña
+            </label>
+            <input
+              type="password"
+              class="form-control {{#if errors.passwordConfirmation}}is-invalid{{/if}}"
+              id="passwordConfirmation"
+              name="passwordConfirmation"
+            />
+          </div>
+
+          <div class="d-grid gap-2 mb-3">
+            <button type="submit" class="btn btn-success">
+              Registrar comercio
+            </button>
+          </div>
+
+          <div class="text-center">
+            <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

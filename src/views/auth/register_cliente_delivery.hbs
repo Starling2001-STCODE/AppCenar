@@ -1,0 +1,150 @@
+<h1 class="h4 mb-3 text-center">
+  Registro {{roleLabel}} AppCenar
+</h1>
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        {{#if authError}}
+          <div class="alert alert-danger">
+            {{authError}}
+          </div>
+        {{/if}}
+
+        {{#if errors}}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {{#if errors.nombre}}
+                <li>{{errors.nombre.msg}}</li>
+              {{/if}}
+              {{#if errors.apellido}}
+                <li>{{errors.apellido.msg}}</li>
+              {{/if}}
+              {{#if errors.telefono}}
+                <li>{{errors.telefono.msg}}</li>
+              {{/if}}
+              {{#if errors.email}}
+                <li>{{errors.email.msg}}</li>
+              {{/if}}
+              {{#if errors.username}}
+                <li>{{errors.username.msg}}</li>
+              {{/if}}
+              {{#if errors.password}}
+                <li>{{errors.password.msg}}</li>
+              {{/if}}
+              {{#if errors.passwordConfirmation}}
+                <li>{{errors.passwordConfirmation.msg}}</li>
+              {{/if}}
+            </ul>
+          </div>
+        {{/if}}
+
+        <form
+          action="{{formAction}}"
+          method="post"
+          enctype="multipart/form-data"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.nombre}}is-invalid{{/if}}"
+              id="nombre"
+              name="nombre"
+              value="{{old.nombre}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.apellido}}is-invalid{{/if}}"
+              id="apellido"
+              name="apellido"
+              value="{{old.apellido}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.telefono}}is-invalid{{/if}}"
+              id="telefono"
+              name="telefono"
+              value="{{old.telefono}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input
+              type="email"
+              class="form-control {{#if errors.email}}is-invalid{{/if}}"
+              id="email"
+              name="email"
+              value="{{old.email}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Usuario</label>
+            <input
+              type="text"
+              class="form-control {{#if errors.username}}is-invalid{{/if}}"
+              id="username"
+              name="username"
+              value="{{old.username}}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="avatar" class="form-label">Foto de perfil</label>
+            <input
+              type="file"
+              class="form-control"
+              id="avatar"
+              name="avatar"
+              accept="image/*"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              type="password"
+              class="form-control {{#if errors.password}}is-invalid{{/if}}"
+              id="password"
+              name="password"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="passwordConfirmation" class="form-label">
+              Confirmar contraseña
+            </label>
+            <input
+              type="password"
+              class="form-control {{#if errors.passwordConfirmation}}is-invalid{{/if}}"
+              id="passwordConfirmation"
+              name="passwordConfirmation"
+            />
+          </div>
+
+          <div class="d-grid gap-2 mb-3">
+            <button type="submit" class="btn btn-success">
+              Crear cuenta {{roleLabel}}
+            </button>
+          </div>
+
+          <div class="text-center">
+            <a href="/login">¿Ya tienes cuenta? Inicia sesión</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
