@@ -1,0 +1,15 @@
+<div class="list-group">
+  {{#each items}}
+    <a
+      href="{{this.href}}"
+      class="list-group-item list-group-item-action d-flex align-items-center gap-2 py-3 sidebar-item
+        {{#if this.active}}active{{/if}}
+        {{#if this.danger}}text-danger fw-semibold{{/if}}"
+    >
+      {{#if this.icon}}
+        <i class="{{this.icon}}"></i>
+      {{/if}}
+      <span>{{this.label}}</span>
+    </a>
+  {{/each}}
+</div>

@@ -12,10 +12,33 @@
     />
     <link rel="stylesheet" href="/css/app.css" />
   </head>
-  <body class="bg-light">
+  <body class="bg-light {{#if currentRole}}role-{{currentRole}}{{else}}role-public{{/if}}">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="/">AppCenar</a>
+
+        {{#if currentUser}}
+          <div class="d-flex ms-auto align-items-center gap-2">
+            <span class="navbar-text d-none d-sm-inline">
+              Hola, {{currentUser.nombre}}
+            </span>
+            <a href="/" class="btn btn-outline-light btn-sm d-none d-sm-inline">
+              Inicio
+            </a>
+            <a href="/logout" class="btn btn-light btn-sm">
+              Cerrar sesión
+            </a>
+          </div>
+        {{else}}
+          <div class="d-flex ms-auto gap-2">
+            <a href="/login" class="btn btn-outline-light btn-sm">
+              Iniciar sesión
+            </a>
+            <a href="/register/cliente" class="btn btn-primary btn-sm">
+              Registrarme
+            </a>
+          </div>
+        {{/if}}
       </div>
     </nav>
 

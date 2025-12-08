@@ -38,7 +38,9 @@ app.set("views", path.join(__dirname, "views"));
 app.use(sessionMiddleware);
 
 app.use((req, res, next) => {
-  res.locals.currentUser = req.session.user || null;
+  const user = req.session.user || null;
+  res.locals.currentUser = user;
+  res.locals.currentRole = user ? user.rol : null;
   next();
 });
 

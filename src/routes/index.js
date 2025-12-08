@@ -43,6 +43,13 @@ router.get(
   clienteHomeController.getHome
 );
 
+router.get(
+  "/cliente/comercios/:tipoId",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteHomeController.getCommercesByType
+);
+
 // DELIVERY
 router.get(
   "/delivery",
