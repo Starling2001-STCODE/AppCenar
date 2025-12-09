@@ -167,7 +167,8 @@ const authController = {
   },
 
   async getRegisterComercio(req, res) {
-    const tipos = await CommerceType.find({ activo: true }).sort({ nombre: 1 });
+    //const tipos = await CommerceType.find({ activo: true }).sort({ nombre: 1 });
+    const tipos = await CommerceType.find({ activo: true }).lean();
 
     res.render("auth/register_comercio", {
       title: "Registro Comercio - AppCenar",
