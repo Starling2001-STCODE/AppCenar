@@ -2,43 +2,106 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <title>{{title}}</title>
+    <title>{{title}} | AppCenar</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
     <link rel="stylesheet" href="/css/app.css" />
   </head>
-  <body class="bg-light {{#if currentRole}}role-{{currentRole}}{{else}}role-public{{/if}}">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <body
+    class="bg-light {{#if currentRole}}role-{{currentRole}}{{else}}role-public{{/if}}"
+  >
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div class="container">
-        <a class="navbar-brand" href="/">AppCenar</a>
+        <a class="navbar-brand fw-bold" href="/">
+          <i class="bi bi-shop me-1"></i> AppCenar
+        </a>
 
-        {{#if currentUser}}
-          <div class="d-flex ms-auto align-items-center gap-2">
-            <span class="navbar-text d-none d-sm-inline">
-              Hola, {{currentUser.nombre}}
-            </span>
-            <a href="/" class="btn btn-outline-light btn-sm d-none d-sm-inline">
-              Inicio
-            </a>
-            <a href="/logout" class="btn btn-light btn-sm">
-              Cerrar sesión
-            </a>
-          </div>
-        {{else}}
-          <div class="d-flex ms-auto gap-2">
-            <a href="/login" class="btn btn-outline-light btn-sm">
-              Iniciar sesión
-            </a>
-            <a href="/register/cliente" class="btn btn-primary btn-sm">
-              Registrarme
-            </a>
-          </div>
-        {{/if}}
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+
+          {{#if currentUser}}
+            <div class="d-flex align-items-center gap-2">
+              <a
+                href="/"
+                class="btn btn-outline-light btn-sm d-none d-sm-inline-flex align-items-center"
+              >
+                <i class="bi bi-house-door me-1"></i>
+                Inicio
+              </a>
+
+              <a
+                href="/cliente/carrito"
+                class="btn btn-outline-light btn-sm position-relative d-flex align-items-center"
+              >
+                <i class="bi bi-cart3"></i>
+                <span class="d-none d-sm-inline ms-1">Carrito</span>
+
+                {{#if cartItemCount}}
+                  <span
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                    style="font-size: 0.65rem;"
+                  >
+                    {{cartItemCount}}
+                  </span>
+                {{/if}}
+              </a>
+
+              <span class="navbar-text d-none d-md-inline ms-2">
+                Hola, <strong>{{currentUser.nombre}}</strong>
+              </span>
+
+              <a
+                href="/logout"
+                class="btn btn-light btn-sm d-flex align-items-center ms-1"
+              >
+                <i class="bi bi-box-arrow-right me-1"></i>
+                Salir
+              </a>
+            </div>
+          {{else}}
+            <div class="d-flex ms-auto gap-2">
+              <a
+                href="/login"
+                class="btn btn-outline-light btn-sm d-flex align-items-center"
+              >
+                <i class="bi bi-box-arrow-in-right me-1"></i>
+                Iniciar sesión
+              </a>
+              <a
+                href="/register/cliente"
+                class="btn btn-primary btn-sm d-flex align-items-center"
+              >
+                <i class="bi bi-person-plus me-1"></i>
+                Registrarme
+              </a>
+            </div>
+          {{/if}}
+        </div>
       </div>
     </nav>
 

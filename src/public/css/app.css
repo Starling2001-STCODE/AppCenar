@@ -26,5 +26,16 @@ body {
   color: white !important;
 }
 
+.commerce-favorite {
+  border-radius: 999px;
+}
+
+.commerce-favorite .favorite-icon {
+  font-size: 1rem;
+}
+
+.commerce-favorite.is-favorite .favorite-icon {
+  color: #dc3545;
+}
 
 
