@@ -8,7 +8,7 @@ const { Commerce } = require("../src/models/Commerce");
 async function main() {
   await connectDB();
 
-  const COMMERCE_ID = "6938cf7032e17cf0a832c805";
+  const COMMERCE_ID = "69396592c1843c1a2cb1da90";
 
   const comercio = await Commerce.findById(COMMERCE_ID);
 

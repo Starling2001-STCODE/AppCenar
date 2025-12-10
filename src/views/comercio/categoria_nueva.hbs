@@ -1,0 +1,98 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button
+    class="btn btn-outline-primary d-inline-flex align-items-center"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}"
+    aria-controls="{{sidebarOffcanvasId}}"
+  >
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  <div class="text-end">
+    <div class="fw-semibold">
+      {{comercioNombre}}
+    </div>
+    <div class="small text-muted">
+      Comercio
+    </div>
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h5 mb-0">
+      Nueva categoría
+    </h1>
+    <a href="/comercio/categorias" class="btn btn-link btn-sm">
+      ← Volver a categorías
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <form method="POST" action="/comercio/categorias/nueva">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            class="form-control {{#if errors.nombre}}is-invalid{{/if}}"
+            value="{{formData.nombre}}"
+            required
+          />
+          {{#if errors.nombre}}
+            <div class="invalid-feedback">
+              {{errors.nombre.msg}}
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="mb-3">
+          <label for="descripcion" class="form-label">Descripción (opcional)</label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            class="form-control {{#if errors.descripcion}}is-invalid{{/if}}"
+            rows="3"
+          >{{formData.descripcion}}</textarea>
+          {{#if errors.descripcion}}
+            <div class="invalid-feedback">
+              {{errors.descripcion.msg}}
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary">
+            Crear categoría
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

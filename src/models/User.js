@@ -72,6 +72,10 @@ const userSchema = new mongoose.Schema(
         ref: "Commerce",
       },
     ],
+    deliveryOcupado: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -5,7 +5,6 @@ const { roleMiddleware } = require("../middlewares/roleMiddleware");
 const { adminHomeController } = require("../controllers/admin/adminHomeController");
 const { clienteHomeController } = require("../controllers/cliente/clienteHomeController");
 const { deliveryHomeController } = require("../controllers/delivery/deliveryHomeController");
-const { comercioHomeController } = require("../controllers/comercio/comercioHomeController");
 const { clienteFavoritesController } = require("../controllers/cliente/clienteFavoritesController");
 const { clienteCartController } = require("../controllers/cliente/clienteCartController");
 const { clienteCheckoutController } = require("../controllers/cliente/clienteCheckoutController");
@@ -15,6 +14,18 @@ const { uploadUserAvatar } = require("../config/multer");
 const { updateProfileValidator } = require("../validators/clienteProfileValidators");
 const { addressValidator } = require("../validators/addressValidators");
 const { clienteAddressController } = require("../controllers/cliente/clienteAddressController");
+const { comercioHomeController } = require("../controllers/comercio/comercioHomeController");
+const { comercioOrderController } = require("../controllers/comercio/comercioOrdersController");
+const { comercioCategoryController } = require("../controllers/comercio/comercioCategoryController");
+const { createCategoryValidator } = require("../validators/categoryValidators");
+const { comercioProductController } = require("../controllers/comercio/comercioProductController");
+const { productValidator } = require("../validators/productValidators");
+
+const { uploadCommerceLogo } = require("../config/multer");
+const { commerceProfileValidator } = require("../validators/commerceValidators");
+const { comercioProfileController } = require("../controllers/comercio/comercioProfileController");
+
+
 
 
 
@@ -39,29 +50,9 @@ router.get("/", (req, res) => {
 
 router.use("/", authRoutes);
 
-// CLIENTE
-router.get(
-  "/cliente",
-  authMiddleware,
-  roleMiddleware("cliente"),
-  (req, res) => res.redirect("/cliente/home")
-);
 
-router.get(
-  "/cliente/home",
-  authMiddleware,
-  roleMiddleware("cliente"),
-  clienteHomeController.getHome
-);
 
-router.get(
-  "/cliente/comercios/:tipoId",
-  authMiddleware,
-  roleMiddleware("cliente"),
-  clienteHomeController.getCommercesByType
-);
-
-// DELIVERY
+//RUTAS DE LOS DELIVERY
 router.get(
   "/delivery",
   authMiddleware,
@@ -76,7 +67,7 @@ router.get(
   deliveryHomeController.getHome
 );
 
-// COMERCIO
+//RUTAS DE LOS COMERCIO
 router.get(
   "/comercio",
   authMiddleware,
@@ -91,7 +82,157 @@ router.get(
   comercioHomeController.getHome
 );
 
-// ADMIN
+router.get(
+  "/comercio/pedidos",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioOrderController.getOrders
+);
+
+router.get(
+  "/comercio/pedidos/:orderId",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioOrderController.getOrderDetail
+);
+
+router.get(
+  "/comercio/pedidos/:orderId/asignar-delivery",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioOrderController.getAssignDelivery
+);
+
+router.post(
+  "/comercio/pedidos/:orderId/asignar-delivery",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioOrderController.postAssignDelivery
+);
+
+router.get(
+  "/comercio/perfil",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioProfileController.getProfile
+);
+
+router.post(
+  "/comercio/perfil",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  uploadCommerceLogo.single("logo"),
+  commerceProfileValidator,
+  comercioProfileController.postProfile
+);
+
+router.get(
+  "/comercio/categorias",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioCategoryController.list
+);
+
+router.get(
+  "/comercio/categorias/nueva",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioCategoryController.getCreate
+);
+
+router.post(
+  "/comercio/categorias/nueva",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  createCategoryValidator,
+  comercioCategoryController.postCreate
+);
+
+router.get(
+  "/comercio/categorias/:id/editar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioCategoryController.getEdit
+);
+
+router.post(
+  "/comercio/categorias/:id/editar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  createCategoryValidator,
+  comercioCategoryController.postEdit
+);
+
+router.get(
+  "/comercio/categorias/:id/eliminar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioCategoryController.getDeleteConfirm
+);
+
+router.post(
+  "/comercio/categorias/:id/eliminar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioCategoryController.postDelete
+);
+
+// rutas de productos del comercio
+
+router.get(
+  "/comercio/productos",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioProductController.list
+);
+
+router.get(
+  "/comercio/productos/nuevo",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioProductController.getCreate
+);
+
+router.post(
+  "/comercio/productos/nuevo",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  productValidator,
+  comercioProductController.postCreate
+);
+
+router.get(
+  "/comercio/productos/:id/editar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioProductController.getEdit
+);
+
+router.post(
+  "/comercio/productos/:id/editar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  productValidator,
+  comercioProductController.postEdit
+);
+
+router.get(
+  "/comercio/productos/:id/eliminar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioProductController.getDeleteConfirm
+);
+
+router.post(
+  "/comercio/productos/:id/eliminar",
+  authMiddleware,
+  roleMiddleware("comercio"),
+  comercioProductController.postDelete
+);
+
+
+
+//RUTAS DE LOS ADMIN
 router.get(
   "/admin",
   authMiddleware,
@@ -105,6 +246,17 @@ router.get(
   roleMiddleware("admin"),
   adminHomeController.getDashboard
 );
+
+
+// RUTAS DE LOS CLIENTES
+
+router.get(
+  "/cliente",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  (req, res) => res.redirect("/cliente/home")
+);
+
 
 // CLIENTE FAVORITOS COMERCIOS
 
@@ -121,6 +273,21 @@ router.post(
   roleMiddleware("cliente"),
   clienteFavoritesController.toggleFavorite
 );
+
+router.get(
+  "/cliente/home",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteHomeController.getHome
+);
+
+router.get(
+  "/cliente/comercios/:tipoId",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteHomeController.getCommercesByType
+);
+
 
 // GET CATALOGO COMERCIO
 router.get(

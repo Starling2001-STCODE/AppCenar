@@ -1,0 +1,179 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button
+    class="btn btn-outline-primary d-inline-flex align-items-center"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}"
+    aria-controls="{{sidebarOffcanvasId}}"
+  >
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  <div class="text-end">
+    <div class="fw-semibold">{{comercioNombre}}</div>
+    <div class="small text-muted">Comercio</div>
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h1 class="h5 mb-1">
+        Pedido #{{pedidoId}}
+      </h1>
+      <p class="text-muted small mb-0">
+        {{pedidoFecha}}
+      </p>
+    </div>
+    <a href="/comercio/pedidos" class="btn btn-link btn-sm">
+      ← Volver a pedidos
+    </a>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-8">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h2 class="h6 mb-2">
+                Información del cliente
+              </h2>
+              <p class="mb-1">
+                <strong>{{clienteNombre}}</strong>
+              </p>
+              {{#if clienteTelefono}}
+                <p class="mb-1 small">
+                  Tel: {{clienteTelefono}}
+                </p>
+              {{/if}}
+              {{#if clienteEmail}}
+                <p class="mb-0 small text-muted">
+                  {{clienteEmail}}
+                </p>
+              {{/if}}
+            </div>
+            <div class="text-end">
+              <span class="badge bg-secondary">
+                {{pedidoEstado}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{#if showAddress}}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h2 class="h6 mb-2">
+              Dirección de entrega
+            </h2>
+            {{#if direccion.alias}}
+              <p class="mb-1">
+                <strong>{{direccion.alias}}</strong>
+              </p>
+            {{/if}}
+            <p class="mb-1">
+              {{direccion.linea1}}
+            </p>
+            {{#if direccion.referencia}}
+              <p class="mb-0 small text-muted">
+                {{direccion.referencia}}
+              </p>
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h6 mb-3">
+            Productos
+          </h2>
+
+          {{#if items.length}}
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th class="text-end">Precio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each items}}
+                    <tr>
+                      <td>{{this.nombre}}</td>
+                      <td class="text-end">RD$ {{this.precioFormatted}}</td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          {{else}}
+            <p class="text-muted mb-0">
+              Este pedido no tiene productos registrados.
+            </p>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="h6 mb-3">Resumen del pedido</h2>
+          <div class="d-flex justify-content-between mb-1">
+            <span>Subtotal</span>
+            <span>RD$ {{subtotalFormatted}}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span>ITBIS (18%)</span>
+            <span>RD$ {{itbisFormatted}}</span>
+          </div>
+          <hr />
+          <div class="d-flex justify-content-between mb-3">
+            <strong>Total</strong>
+            <strong>RD$ {{totalFormatted}}</strong>
+          </div>
+
+          {{#if canAssignDelivery}}
+            <a
+              href="/comercio/pedidos/{{pedidoId}}/asignar-delivery"
+              class="btn btn-primary w-100"
+            >
+              Asignar Delivery
+            </a>
+          {{else}}
+            <button class="btn btn-outline-secondary w-100" disabled>
+              Asignar Delivery
+            </button>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

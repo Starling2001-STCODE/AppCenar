@@ -1,4 +1,155 @@
-<div class="container mt-4">
-  <h1 class="h3 mb-3">Home Comercio</h1>
-  <p>Aquí administrarás tus pedidos, productos y horarios.</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button
+    class="btn btn-outline-primary d-inline-flex align-items-center"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}"
+    aria-controls="{{sidebarOffcanvasId}}"
+  >
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  {{#if currentUser}}
+    <div class="text-end">
+      <div class="fw-semibold">
+        {{currentUser.nombre}}
+      </div>
+      <div class="small text-muted">
+        {{currentUser.email}}
+      </div>
+    </div>
+  {{/if}}
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    {{#if currentUser}}
+      <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+        <div
+          class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+          style="width: 40px; height: 40px;"
+        >
+          {{#if comercioLogo}}
+            <img
+              src="{{comercioLogo}}"
+              alt="{{comercioNombre}}"
+              class="rounded-circle"
+              style="width: 100%; height: 100%; object-fit: cover;"
+            />
+          {{else}}
+            <i class="bi bi-shop"></i>
+          {{/if}}
+        </div>
+        <div>
+          <div class="fw-semibold">{{comercioNombre}}</div>
+          <div class="small text-muted">Comercio</div>
+        </div>
+      </div>
+    {{/if}}
+
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <div class="row g-3">
+    <div class="col-12 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h6 mb-3">
+            Resumen del comercio
+          </h2>
+          <p class="mb-1">
+            <span class="text-muted">Nombre:</span><br />
+            <strong>{{comercioNombre}}</strong>
+          </p>
+          <p class="mb-0">
+            <span class="text-muted">Pedidos recientes:</span><br />
+            <strong>{{#if hasPedidos}}{{pedidos.length}}{{else}}0{{/if}}</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h6 mb-0">
+              Pedidos recibidos recientes
+            </h2>
+            <a href="/comercio/pedidos" class="btn btn-sm btn-outline-primary">
+              Ver todos
+            </a>
+          </div>
+
+          {{#if hasPedidos}}
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th class="text-center">Productos</th>
+                    <th class="text-end">Total</th>
+                    <th>Fecha/hora</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each pedidos}}
+                    <tr>
+                      <td>
+                        {{#if this.clienteNombre}}
+                          {{this.clienteNombre}}
+                        {{else}}
+                          Cliente
+                        {{/if}}
+                      </td>
+                      <td>
+                        <span class="badge bg-secondary">
+                          {{this.estado}}
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        {{this.cantidadProductos}}
+                      </td>
+                      <td class="text-end">
+                        RD$ {{this.total}}
+                      </td>
+                      <td>
+                        <span class="small text-muted">
+                          {{this.fechaCreacion}}
+                        </span>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          {{else}}
+            <p class="text-muted mb-0">
+              Aún no has recibido pedidos.
+            </p>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

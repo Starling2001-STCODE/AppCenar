@@ -1,0 +1,92 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button
+    class="btn btn-outline-primary d-inline-flex align-items-center"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}"
+    aria-controls="{{sidebarOffcanvasId}}"
+  >
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  <div class="text-end">
+    <div class="fw-semibold">
+      {{comercioNombre}}
+    </div>
+    <div class="small text-muted">
+      Comercio
+    </div>
+  </div>
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h5 mb-0">
+      Eliminar categoría
+    </h1>
+
+    <a href="/comercio/categorias" class="btn btn-link btn-sm">
+      ← Volver a categorías
+    </a>
+  </div>
+
+  <div class="card border-danger">
+    <div class="card-body">
+      <h2 class="h6 mb-3 text-danger">
+        ¿Seguro que quieres eliminar esta categoría?
+      </h2>
+
+      <p class="mb-1">
+        <span class="text-muted">Nombre:</span><br />
+        <strong>{{categoryNombre}}</strong>
+      </p>
+
+      {{#if categoryDescripcion}}
+        <p class="mb-3">
+          <span class="text-muted">Descripción:</span><br />
+          {{categoryDescripcion}}
+        </p>
+      {{/if}}
+
+      <p class="text-muted small mb-4">
+        Esta acción no se puede deshacer.
+      </p>
+
+      <form
+        method="POST"
+        action="/comercio/categorias/{{categoryId}}/eliminar"
+        class="d-flex justify-content-end gap-2"
+      >
+        <a href="/comercio/categorias" class="btn btn-outline-secondary">
+          Cancelar
+        </a>
+        <button type="submit" class="btn btn-danger">
+          Eliminar categoría
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

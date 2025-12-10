@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema(
+const categorySchema = new mongoose.Schema(
   {
     nombre: {
       type: String,
@@ -10,19 +10,7 @@ const productSchema = new mongoose.Schema(
     descripcion: {
       type: String,
       trim: true,
-    },
-    precio: {
-      type: Number,
-      required: true,
-    },
-    categoria: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    imagen: {
-      type: String,
-      default: null,
+      default: "",
     },
     comercio: {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +27,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-const Product = mongoose.model("Product", productSchema);
+const Category = mongoose.model("Category", categorySchema);
 
-module.exports = { Product };
+module.exports = { Category };
