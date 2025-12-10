@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema(
     },
     apellido: {
       type: String,
-      required: true,
       trim: true,
+      default: "",
     },
     telefono: {
       type: String,
@@ -68,6 +68,12 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    favoritos: [
+    {
+        type: require("mongoose").Schema.Types.ObjectId,
+        ref: "Commerce",
+    },
+    ],
   },
   {
     timestamps: true,

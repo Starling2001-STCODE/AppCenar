@@ -122,20 +122,21 @@
           <div class="mb-3">
             <label for="tipoComercioId" class="form-label">Tipo de comercio</label>
             <select
-              class="form-select {{#if errors.tipoComercioId}}is-invalid{{/if}}"
-              id="tipoComercioId"
-              name="tipoComercioId"
-            >
-              <option value="">Seleccione un tipo</option>
-              {{#each tiposComercio}}
-                <option
-                  value="{{this._id}}"
-                  {{#ifEquals ../old.tipoComercioId this._id}}selected{{/ifEquals}}
+                class="form-select {{#if errors.tipoComercioId}}is-invalid{{/if}}"
+                id="tipoComercioId"
+                name="tipoComercioId"
                 >
-                  {{this.nombre}}
-                </option>
-              {{/each}}
-            </select>
+                <option value="">Seleccione un tipo</option>
+                {{#each tiposComercio}}
+                    <option
+                    value="{{this._id}}"
+                    {{#ifEquals ../old.tipoComercioId this._id}}selected{{/ifEquals}}
+                    >
+                    {{this.nombre}}
+                    </option>
+                {{/each}}
+                </select>
+
           </div>
 
           <hr class="my-3" />

@@ -6,6 +6,10 @@ const { adminHomeController } = require("../controllers/admin/adminHomeControlle
 const { clienteHomeController } = require("../controllers/cliente/clienteHomeController");
 const { deliveryHomeController } = require("../controllers/delivery/deliveryHomeController");
 const { comercioHomeController } = require("../controllers/comercio/comercioHomeController");
+const { clienteFavoritesController } = require("../controllers/cliente/clienteFavoritesController");
+const { clienteCartController } = require("../controllers/cliente/clienteCartController");
+
+
 
 const router = express.Router();
 
@@ -94,5 +98,53 @@ router.get(
   roleMiddleware("admin"),
   adminHomeController.getDashboard
 );
+
+// CLIENTE FAVORITOS COMERCIOS
+
+router.get(
+  "/cliente/favoritos",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteFavoritesController.listFavorites
+);
+
+router.post(
+  "/cliente/favoritos/:commerceId/toggle",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteFavoritesController.toggleFavorite
+);
+
+// GET CATALOGO COMERCIO
+router.get(
+  "/cliente/comercios/:commerceId/catalogo",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteHomeController.getCommerceCatalog
+);
+
+// CLIENTE CARRITO
+router.get(
+  "/cliente/carrito",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteCartController.getCart
+);
+
+router.post(
+  "/cliente/carrito/agregar/:productId",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteCartController.addToCart
+);
+
+router.post(
+  "/cliente/carrito/eliminar/:productId",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteCartController.removeFromCart
+);
+
+
 
 module.exports = router;

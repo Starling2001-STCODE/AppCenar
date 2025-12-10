@@ -1,0 +1,147 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button
+    class="btn btn-outline-primary d-inline-flex align-items-center"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}"
+    aria-controls="{{sidebarOffcanvasId}}"
+  >
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  {{#if currentUser}}
+    <div class="text-end">
+      <div class="fw-semibold">
+        {{currentUser.nombre}}
+      </div>
+      <div class="small text-muted">
+        {{currentUser.email}}
+      </div>
+    </div>
+  {{/if}}
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    {{#if currentUser}}
+      <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+        <div
+          class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+          style="width: 40px; height: 40px;"
+        >
+          <i class="bi bi-person"></i>
+        </div>
+        <div>
+          <div class="fw-semibold">{{currentUser.nombre}}</div>
+          <div class="small text-muted">{{currentUser.email}}</div>
+        </div>
+      </div>
+    {{/if}}
+
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <h1 class="h5 mb-3">
+    Mi carrito
+  </h1>
+
+  {{#if hasItems}}
+    <div class="row g-4">
+      <div class="col-12 col-lg-8">
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Comercio</th>
+                <th class="text-end">Precio</th>
+                <th class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each items}}
+                <tr>
+                  <td>
+                    <div class="fw-semibold">{{this.nombre}}</div>
+                    {{#if this.descripcion}}
+                      <div class="small text-muted">
+                        {{this.descripcion}}
+                      </div>
+                    {{/if}}
+                  </td>
+                  <td>
+                    {{this.comercioNombre}}
+                  </td>
+                  <td class="text-end">
+                    RD$ {{this.precio}}
+                  </td>
+                  <td class="text-end">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-danger btn-remove-from-cart"
+                      data-product-id="{{this.id}}"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h6 mb-3">Resumen</h2>
+            <div class="d-flex justify-content-between mb-1">
+              <span>Subtotal</span>
+              <span>RD$ {{subtotalFormatted}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span>ITBIS (18%)</span>
+              <span>RD$ {{itbisFormatted}}</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between mb-3">
+              <strong>Total</strong>
+              <strong>RD$ {{totalFormatted}}</strong>
+            </div>
+            <button
+              type="button"
+              class="btn btn-success w-100"
+            >
+              Continuar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <p class="text-muted">
+      Tu carrito está vacío. Ve al catálogo de un comercio y agrega productos.
+    </p>
+  {{/if}}
+</div>
+
+<script src="/js/cliente_carrito.js"></script>

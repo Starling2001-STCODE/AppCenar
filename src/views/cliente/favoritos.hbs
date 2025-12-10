@@ -63,117 +63,87 @@
   <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
     <div>
       <h1 class="h5 mb-0">
-        Comercios de {{tipoComercio.nombre}}
+        Mis comercios favoritos
       </h1>
       <p class="text-muted mb-0 small">
-        Selecciona un comercio para ver su catálogo.
+        Accede rápidamente a los comercios que más utilizas.
       </p>
     </div>
     <div class="text-md-end">
-      <p class="mb-1 small text-muted">
-        {{#if search}}
-          Mostrando {{totalComercios}} comercios para “{{search}}”
+      <p class="mb-0 small text-muted">
+        {{#if totalComercios}}
+          Tienes {{totalComercios}} comercios en favoritos.
         {{else}}
-          Mostrando {{totalComercios}} comercios
+          No tienes comercios favoritos aún.
         {{/if}}
       </p>
-      <a href="/cliente/home" class="btn btn-link btn-sm">
-        ← Volver a tipos
-      </a>
     </div>
   </div>
-
-  <form
-    method="GET"
-    action="/cliente/comercios/{{tipoComercio._id}}"
-    class="mb-3"
-  >
-    <div class="input-group">
-      <input
-        type="text"
-        name="q"
-        class="form-control"
-        placeholder="Buscar comercio por nombre..."
-        value="{{search}}"
-      />
-      <button class="btn btn-primary" type="submit">
-        Buscar
-      </button>
-      {{#if search}}
-        <a
-          href="/cliente/comercios/{{tipoComercio._id}}"
-          class="btn btn-outline-secondary"
-        >
-          Limpiar
-        </a>
-      {{/if}}
-    </div>
-  </form>
 
   {{#if comercios.length}}
     <div class="row g-3 mt-2">
       {{#each comercios}}
         <div class="col-12 col-md-6 col-lg-4">
-            <div class="card h-100">
+          <div class="card h-100">
             {{#if this.logo}}
-                <img
+              <img
                 src="{{this.logo}}"
                 class="card-img-top"
                 alt="{{this.nombre}}"
                 style="object-fit: cover; height: 160px;"
-                />
+              />
             {{/if}}
             <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="d-flex justify-content-between align-items-start mb-2">
                 <h2 class="h6 card-title mb-0">
-                    {{this.nombre}}
+                  {{this.nombre}}
                 </h2>
                 <button
-                    type="button"
-                    class="btn btn-sm btn-outline-danger commerce-favorite {{#if this.isFavorite}}is-favorite{{/if}}"
-                    data-commerce-id="{{this._id}}"
+                  type="button"
+                  class="btn btn-sm btn-outline-danger commerce-favorite is-favorite"
+                  data-commerce-id="{{this._id}}"
                 >
-                    <span class="favorite-icon">
-                    {{#if this.isFavorite}}♥{{else}}♡{{/if}}
-                    </span>
+                  <span class="favorite-icon">♥</span>
                 </button>
-                </div>
+              </div>
 
-                {{#if this.direccion}}
+              {{#if this.direccion}}
                 <p class="card-text small mb-1">
-                    {{this.direccion}}
+                  {{this.direccion}}
                 </p>
-                {{else if this.descripcion}}
+              {{else if this.descripcion}}
                 <p class="card-text small mb-1">
-                    {{this.descripcion}}
+                  {{this.descripcion}}
                 </p>
-                {{else}}
+              {{else}}
                 <p class="card-text small text-muted mb-1">
-                    Sin descripción disponible.
+                  Sin descripción disponible.
                 </p>
-                {{/if}}
+              {{/if}}
 
-                {{#if this.horarioApertura}}
+              {{#if this.horarioApertura}}
                 <p class="card-text small text-muted mb-2">
-                    Horario: {{this.horarioApertura}} - {{this.horarioCierre}}
+                  Horario: {{this.horarioApertura}} - {{this.horarioCierre}}
                 </p>
-                {{/if}}
+              {{/if}}
 
-                <div class="mt-auto">
-                <a
-                    href="/cliente/comercios/{{this._id}}/catalogo"
-                    class="btn btn-outline-primary w-100">
-                    Ver catálogo
-                </a>
-                </div>
+              <div class="mt-auto">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary w-100"
+                  disabled
+                >
+                  Ver catálogo
+                </button>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        {{/each}}
+      {{/each}}
     </div>
   {{else}}
     <p class="text-muted mt-3">
-      No hay comercios registrados para este tipo por el momento.
+      Aún no has marcado ningún comercio como favorito. Ve al listado de comercios y toca el corazón para agregar uno.
     </p>
   {{/if}}
 </div>
