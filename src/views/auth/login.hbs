@@ -31,7 +31,7 @@
               class="form-control {{#if errors.identity}}is-invalid{{/if}}"
               id="identity"
               name="identity"
-              placeholder="usuario o correo"
+              placeholder="Usuario o Correo"
               value="{{old.identity}}"
             />
             {{#if errors.identity}}
@@ -42,12 +42,13 @@
           </div>
 
           <div class="mb-3">
-            <label for="password" class="form-label">Contraseña</label>
+            <label for="password" class="form-label" >Contraseña</label>
             <input
               type="password"
               class="form-control {{#if errors.password}}is-invalid{{/if}}"
               id="password"
               name="password"
+              placeholder="Contraseña"
             />
             {{#if errors.password}}
               <div class="invalid-feedback">
@@ -62,12 +63,32 @@
             </button>
           </div>
 
-          <div class="text-center">
-            <a href="/register/cliente" class="d-block">Registrarse como cliente</a>
-            <a href="/register/delivery" class="d-block">Registrarse como delivery</a>
-            <a href="/register/comercio" class="d-block">Registrarse como comercio</a>
-            <a href="/password/forgot" class="d-block">Restablecer contraseña</a>
+          <p class="text-center">¿Aún no tienes cuenta? Regístrate como:</p>
+
+          <div class="card-body p-1 p-md-2">
+            <div class="row g-2 mb-2">
+                <div class="col-6">
+                    <a href="/register/cliente" class="btn btn-outline-primary btn-lg w-100 py-2 d-flex align-items-center justify-content-center">
+                        <span class="fw-semibold">Cliente</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="/register/delivery" class="btn btn-outline-success btn-lg w-100 py-2 d-flex align-items-center justify-content-center">
+                        <span class="fw-semibold">Delivery</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <a href="/register/comercio" class="btn btn-outline-secondary btn-lg w-100 py-2 d-flex align-items-center justify-content-center">
+                        <span class="fw-semibold">Comercio</span>
+                    </a>
+                </div>
+            </div>
+            
           </div>
+          <a href="/password/forgot" class="text-decoration-none text-center d-block mt-3">¿Olvidaste tu contraseña?</a>
         </form>
       </div>
     </div>
