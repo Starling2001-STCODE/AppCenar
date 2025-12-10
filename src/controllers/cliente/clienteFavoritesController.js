@@ -17,12 +17,16 @@ const clienteFavoritesController = {
 
       const commerce = await Commerce.findById(commerceId).select("_id").lean();
       if (!commerce) {
-        return res.status(404).json({ ok: false, message: "Comercio no encontrado" });
+        return res
+          .status(404)
+          .json({ ok: false, message: "Comercio no encontrado" });
       }
 
       const user = await User.findById(userSession.id).select("favoritos");
       if (!user) {
-        return res.status(401).json({ ok: false, message: "Usuario no encontrado" });
+        return res
+          .status(401)
+          .json({ ok: false, message: "Usuario no encontrado" });
       }
 
       const currentIds = user.favoritos.map(String);
@@ -59,11 +63,12 @@ const clienteFavoritesController = {
         .select("favoritos")
         .lean();
 
-      const favoritosIds = user && user.favoritos
-        ? user.favoritos.map(function (id) {
+      const favoritosIds =
+        user && user.favoritos
+          ? user.favoritos.map(function (id) {
             return String(id);
           })
-        : [];
+          : [];
 
       let comercios = [];
 

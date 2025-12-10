@@ -1,0 +1,93 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#{{sidebarOffcanvasId}}" aria-controls="{{sidebarOffcanvasId}}">
+        <i class="bi bi-list me-2"></i>
+        Menú
+    </button>
+
+    {{#if currentUser}}
+    <div class="text-end">
+        <div class="fw-semibold">
+            {{currentUser.nombre}}
+        </div>
+        <div class="small text-muted">
+            {{currentUser.email}}
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="{{sidebarOffcanvasId}}"
+    aria-labelledby="{{sidebarOffcanvasId}}Label">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+            {{sidebar.title}}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        {{#if currentUser}}
+        <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px;">
+                <i class="bi bi-person"></i>
+            </div>
+            <div>
+                <div class="fw-semibold">{{currentUser.nombre}}</div>
+                <div class="small text-muted">{{currentUser.email}}</div>
+            </div>
+        </div>
+        {{/if}}
+
+        {{> sidebar sidebar}}
+    </div>
+</div>
+
+<div class="mt-3">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="h5 mb-3">
+                Pedido creado correctamente
+            </h1>
+            <p class="mb-2">
+                Tu pedido ha sido registrado con estado
+                <strong>{{pedidoEstado}}</strong>.
+            </p>
+            <p class="mb-2">
+                Comercio:<br />
+                <strong>{{comercioNombre}}</strong>
+            </p>
+            <p class="mb-2">
+                Número de pedido:<br />
+                <code>{{pedidoId}}</code>
+            </p>
+            <p class="mb-3">
+                Fecha de creación:<br />
+                <span class="text-muted small">{{pedidoFecha}}</span>
+            </p>
+
+            <div class="d-flex justify-content-between mb-1">
+                <span>Subtotal</span>
+                <span>RD$ {{subtotalFormatted}}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+                <span>ITBIS (18%)</span>
+                <span>RD$ {{itbisFormatted}}</span>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between mb-3">
+                <strong>Total</strong>
+                <strong>RD$ {{totalFormatted}}</strong>
+            </div>
+
+            <div class="d-flex gap-2">
+                <a href="/cliente/pedidos" class="btn btn-primary">
+                    Ver mis pedidos
+                </a>
+                <a href="/cliente/home" class="btn btn-outline-secondary">
+                    Volver al inicio
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

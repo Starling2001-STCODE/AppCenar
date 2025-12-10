@@ -1,0 +1,141 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#{{sidebarOffcanvasId}}" aria-controls="{{sidebarOffcanvasId}}">
+        <i class="bi bi-list me-2"></i>
+        Menú
+    </button>
+
+    {{#if currentUser}}
+    <div class="text-end">
+        <div class="fw-semibold">
+            {{currentUser.nombre}}
+        </div>
+        <div class="small text-muted">
+            {{currentUser.email}}
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="{{sidebarOffcanvasId}}"
+    aria-labelledby="{{sidebarOffcanvasId}}Label">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+            {{sidebar.title}}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        {{#if currentUser}}
+        <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center"
+                style="width: 48px; height: 48px; overflow: hidden;">
+                {{#if profile.avatar}}
+                <img src="{{profile.avatar}}" alt="{{profile.nombre}}"
+                    style="width: 100%; height: 100%; object-fit: cover;" />
+                {{else}}
+                <i class="bi bi-person fs-3 text-muted"></i>
+                {{/if}}
+            </div>
+            <div>
+                <div class="fw-semibold">{{profile.nombre}} {{profile.apellido}}</div>
+                <div class="small text-muted">{{profile.email}}</div>
+            </div>
+        </div>
+        {{/if}}
+
+        {{> sidebar sidebar}}
+    </div>
+</div>
+
+<div class="mt-3">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="h5 mb-3">
+                        Mi perfil
+                    </h1>
+
+                    {{#if successMessage}}
+                    <div class="alert alert-success">
+                        {{successMessage}}
+                    </div>
+                    {{/if}}
+
+                    <form method="POST" action="/cliente/perfil" enctype="multipart/form-data">
+                        <div class="mb-3 text-center">
+                            <div class="d-inline-block position-relative">
+                                <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center mb-2"
+                                    style="width: 96px; height: 96px; overflow: hidden;">
+                                    {{#if profile.avatar}}
+                                    <img src="{{profile.avatar}}" alt="{{profile.nombre}}"
+                                        style="width: 100%; height: 100%; object-fit: cover;" />
+                                    {{else}}
+                                    <i class="bi bi-person fs-1 text-muted"></i>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div>
+                                <label class="form-label mb-1">Foto de perfil (opcional)</label>
+                                <input type="file" name="avatar" class="form-control form-control-sm" />
+                                <div class="form-text">
+                                    Si no seleccionas una imagen, se mantendrá la actual.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" name="nombre"
+                                class="form-control {{#if errors.nombre}}is-invalid{{/if}}"
+                                value="{{profile.nombre}}" />
+                            {{#if errors.nombre}}
+                            <div class="invalid-feedback">
+                                {{errors.nombre.msg}}
+                            </div>
+                            {{/if}}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <input type="text" id="apellido" name="apellido"
+                                class="form-control {{#if errors.apellido}}is-invalid{{/if}}"
+                                value="{{profile.apellido}}" />
+                            {{#if errors.apellido}}
+                            <div class="invalid-feedback">
+                                {{errors.apellido.msg}}
+                            </div>
+                            {{/if}}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="text" id="telefono" name="telefono"
+                                class="form-control {{#if errors.telefono}}is-invalid{{/if}}"
+                                value="{{profile.telefono}}" />
+                            {{#if errors.telefono}}
+                            <div class="invalid-feedback">
+                                {{errors.telefono.msg}}
+                            </div>
+                            {{/if}}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{profile.email}}"
+                                disabled />
+                            <div class="form-text">
+                                El correo no se puede modificar desde esta pantalla.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Guardar cambios
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

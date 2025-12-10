@@ -8,8 +8,7 @@ const { Commerce } = require("../src/models/Commerce");
 async function main() {
   await connectDB();
 
-  // ✅ ID REAL DEL COMERCIO QUE YA EXISTE
-  const COMMERCE_ID = "693882da224b9584cb331eda";
+  const COMMERCE_ID = "6938cf7032e17cf0a832c805";
 
   const comercio = await Commerce.findById(COMMERCE_ID);
 

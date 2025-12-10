@@ -1,0 +1,155 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#{{sidebarOffcanvasId}}" aria-controls="{{sidebarOffcanvasId}}">
+        <i class="bi bi-list me-2"></i>
+        Menú
+    </button>
+
+    {{#if currentUser}}
+    <div class="text-end">
+        <div class="fw-semibold">
+            {{currentUser.nombre}}
+        </div>
+        <div class="small text-muted">
+            {{currentUser.email}}
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="{{sidebarOffcanvasId}}"
+    aria-labelledby="{{sidebarOffcanvasId}}Label">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+            {{sidebar.title}}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        {{#if currentUser}}
+        <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                style="width: 40px; height: 40px;">
+                <i class="bi bi-person"></i>
+            </div>
+            <div>
+                <div class="fw-semibold">{{currentUser.nombre}}</div>
+                <div class="small text-muted">{{currentUser.email}}</div>
+            </div>
+        </div>
+        {{/if}}
+
+        {{> sidebar sidebar}}
+    </div>
+</div>
+
+<div class="mt-3">
+    <div class="row g-4">
+        <div class="col-12 col-lg-8">
+            <h1 class="h5 mb-3">
+                Seleccionar dirección de entrega
+            </h1>
+
+            {{#if formError}}
+            <div class="alert alert-danger">
+                {{formError}}
+            </div>
+            {{/if}}
+
+            {{#if hasAddresses}}
+            <form method="POST" action="/cliente/checkout/confirmar">
+                <div class="list-group mb-3">
+                    {{#each direcciones}}
+                    <label class="list-group-item d-flex justify-content-between align-items-start">
+                        <div class="d-flex align-items-start">
+                            <input class="form-check-input me-3 mt-1" type="radio" name="direccionId"
+                                value="{{this._id}}" />
+                            <div>
+                                <div class="fw-semibold">
+                                    {{#if this.alias}}
+                                    {{this.alias}}
+                                    {{else}}
+                                    Dirección
+                                    {{/if}}
+                                </div>
+                                <div class="small">
+                                    {{this.linea1}}
+                                </div>
+                                {{#if this.referencia}}
+                                <div class="small text-muted">
+                                    {{this.referencia}}
+                                </div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </label>
+                    {{/each}}
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Continuar
+                </button>
+            </form>
+            {{else}}
+            <div class="alert alert-info">
+                No tienes direcciones registradas. Crea una para continuar con tu pedido.
+            </div>
+            {{/if}}
+
+            <hr class="my-4" />
+
+            <h2 class="h6 mb-3">
+                Nueva dirección
+            </h2>
+
+            <form method="POST" action="/cliente/checkout/direccion/nueva">
+                <div class="mb-3">
+                    <label for="alias" class="form-label">Alias (opcional)</label>
+                    <input type="text" id="alias" name="alias" class="form-control" value="{{old.alias}}"
+                        placeholder="Casa, Trabajo, Apartamento 3B..." />
+                </div>
+                <div class="mb-3">
+                    <label for="linea1" class="form-label">Dirección</label>
+                    <input type="text" id="linea1" name="linea1" class="form-control" value="{{old.linea1}}"
+                        placeholder="Calle, número, edificio..." required />
+                </div>
+                <div class="mb-3">
+                    <label for="referencia" class="form-label">Referencia (opcional)</label>
+                    <textarea id="referencia" name="referencia" class="form-control" rows="2"
+                        placeholder="Punto de referencia, color de la casa, etc.">{{old.referencia}}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Guardar dirección
+                </button>
+            </form>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="h6 mb-3">Resumen del pedido</h2>
+                    <p class="mb-2">
+                        <span class="text-muted">Comercio:</span><br />
+                        <strong>{{comercioNombre}}</strong>
+                    </p>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Subtotal</span>
+                        <span>RD$ {{subtotalFormatted}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>ITBIS (18%)</span>
+                        <span>RD$ {{itbisFormatted}}</span>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between mb-3">
+                        <strong>Total</strong>
+                        <strong>RD$ {{totalFormatted}}</strong>
+                    </div>
+                    <button type="button" class="btn btn-success w-100" disabled>
+                        Selecciona una dirección para continuar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

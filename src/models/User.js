@@ -1,5 +1,3 @@
-// RF-R7 – User con campos de activación y reset
-
 const mongoose = require("mongoose");
 
 const USER_ROLES = ["cliente", "comercio", "delivery", "admin"];
@@ -69,10 +67,10 @@ const userSchema = new mongoose.Schema(
       default: null,
     },
     favoritos: [
-    {
-        type: require("mongoose").Schema.Types.ObjectId,
+      {
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Commerce",
-    },
+      },
     ],
   },
   {

@@ -1,58 +1,42 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <button
-    class="btn btn-outline-primary d-inline-flex align-items-center"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#{{sidebarOffcanvasId}}"
-    aria-controls="{{sidebarOffcanvasId}}"
-  >
+  <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}" aria-controls="{{sidebarOffcanvasId}}">
     <i class="bi bi-list me-2"></i>
     Menú
   </button>
 
   {{#if currentUser}}
-    <div class="text-end">
-      <div class="fw-semibold">
-        {{currentUser.nombre}}
-      </div>
-      <div class="small text-muted">
-        {{currentUser.email}}
-      </div>
+  <div class="text-end">
+    <div class="fw-semibold">
+      {{currentUser.nombre}}
     </div>
+    <div class="small text-muted">
+      {{currentUser.email}}
+    </div>
+  </div>
   {{/if}}
 </div>
 
-<div
-  class="offcanvas offcanvas-start"
-  tabindex="-1"
-  id="{{sidebarOffcanvasId}}"
-  aria-labelledby="{{sidebarOffcanvasId}}Label"
->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
       {{sidebar.title}}
     </h5>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     {{#if currentUser}}
-      <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
-        <div
-          class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
-          style="width: 40px; height: 40px;"
-        >
-          <i class="bi bi-person"></i>
-        </div>
-        <div>
-          <div class="fw-semibold">{{currentUser.nombre}}</div>
-          <div class="small text-muted">{{currentUser.email}}</div>
-        </div>
+    <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+      <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+        style="width: 40px; height: 40px;">
+        <i class="bi bi-person"></i>
       </div>
+      <div>
+        <div class="fw-semibold">{{currentUser.nombre}}</div>
+        <div class="small text-muted">{{currentUser.email}}</div>
+      </div>
+    </div>
     {{/if}}
 
     {{> sidebar sidebar}}
@@ -60,92 +44,64 @@
 </div>
 
 <div class="mt-3">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-2">
+  <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-      <h1 class="h5 mb-0">
+      <h1 class="h5 mb-1">
         Mis comercios favoritos
       </h1>
-      <p class="text-muted mb-0 small">
-        Accede rápidamente a los comercios que más utilizas.
-      </p>
-    </div>
-    <div class="text-md-end">
-      <p class="mb-0 small text-muted">
-        {{#if totalComercios}}
-          Tienes {{totalComercios}} comercios en favoritos.
-        {{else}}
-          No tienes comercios favoritos aún.
-        {{/if}}
+      <p class="text-muted small mb-0">
+        Tienes {{totalComercios}} comercio(s) marcado(s) como favorito(s).
       </p>
     </div>
   </div>
 
-  {{#if comercios.length}}
-    <div class="row g-3 mt-2">
-      {{#each comercios}}
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="card h-100">
-            {{#if this.logo}}
-              <img
-                src="{{this.logo}}"
-                class="card-img-top"
-                alt="{{this.nombre}}"
-                style="object-fit: cover; height: 160px;"
-              />
-            {{/if}}
-            <div class="card-body d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-start mb-2">
-                <h2 class="h6 card-title mb-0">
-                  {{this.nombre}}
-                </h2>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-danger commerce-favorite is-favorite"
-                  data-commerce-id="{{this._id}}"
-                >
-                  <span class="favorite-icon">♥</span>
-                </button>
-              </div>
+  {{#if totalComercios}}
+  <div class="row g-3">
+    {{#each comercios}}
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100">
+        {{#if this.logo}}
+        <img src="{{this.logo}}" alt="{{this.nombre}}" class="card-img-top" style="height: 140px; object-fit: cover;" />
+        {{/if}}
+        <div class="card-body d-flex flex-column">
+          <h2 class="h6 card-title mb-1">
+            {{this.nombre}}
+          </h2>
 
-              {{#if this.direccion}}
-                <p class="card-text small mb-1">
-                  {{this.direccion}}
-                </p>
-              {{else if this.descripcion}}
-                <p class="card-text small mb-1">
-                  {{this.descripcion}}
-                </p>
-              {{else}}
-                <p class="card-text small text-muted mb-1">
-                  Sin descripción disponible.
-                </p>
-              {{/if}}
+          {{#if this.email}}
+          <p class="small text-muted mb-1">
+            {{this.email}}
+          </p>
+          {{/if}}
 
-              {{#if this.horarioApertura}}
-                <p class="card-text small text-muted mb-2">
-                  Horario: {{this.horarioApertura}} - {{this.horarioCierre}}
-                </p>
-              {{/if}}
+          {{#if this.telefono}}
+          <p class="small mb-1">
+            Tel: {{this.telefono}}
+          </p>
+          {{/if}}
 
-              <div class="mt-auto">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary w-100"
-                  disabled
-                >
-                  Ver catálogo
-                </button>
-              </div>
-            </div>
+          {{#if this.horarioApertura}}
+          <p class="small text-muted mb-3">
+            Horario: {{this.horarioApertura}} - {{this.horarioCierre}}
+          </p>
+          {{/if}}
+
+          <div class="mt-auto d-flex justify-content-between align-items-center">
+            <a href="/cliente/comercios/{{this._id}}/catalogo" class="btn btn-sm btn-primary">
+              Ver catálogo
+            </a>
+            <span class="text-danger">
+              <i class="bi bi-heart-fill"></i>
+            </span>
           </div>
         </div>
-      {{/each}}
+      </div>
     </div>
+    {{/each}}
+  </div>
   {{else}}
-    <p class="text-muted mt-3">
-      Aún no has marcado ningún comercio como favorito. Ve al listado de comercios y toca el corazón para agregar uno.
-    </p>
+  <p class="text-muted">
+    Aún no tienes comercios marcados como favoritos.
+  </p>
   {{/if}}
 </div>
-
-<script src="/js/cliente_favoritos.js"></script>

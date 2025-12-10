@@ -8,6 +8,13 @@ const { deliveryHomeController } = require("../controllers/delivery/deliveryHome
 const { comercioHomeController } = require("../controllers/comercio/comercioHomeController");
 const { clienteFavoritesController } = require("../controllers/cliente/clienteFavoritesController");
 const { clienteCartController } = require("../controllers/cliente/clienteCartController");
+const { clienteCheckoutController } = require("../controllers/cliente/clienteCheckoutController");
+const { clienteOrderController } = require("../controllers/cliente/clienteOrderController");
+const { clienteProfileController } = require("../controllers/cliente/clienteProfileController");
+const { uploadUserAvatar } = require("../config/multer");
+const { updateProfileValidator } = require("../validators/clienteProfileValidators");
+const { addressValidator } = require("../validators/addressValidators");
+const { clienteAddressController } = require("../controllers/cliente/clienteAddressController");
 
 
 
@@ -144,6 +151,101 @@ router.post(
   roleMiddleware("cliente"),
   clienteCartController.removeFromCart
 );
+
+// CLIENTE DIRECCION
+router.get(
+  "/cliente/checkout/direccion",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteCheckoutController.selectAddress
+);
+
+router.post(
+  "/cliente/checkout/direccion/nueva",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteCheckoutController.createAddressFromCheckout
+);
+
+//CLIENTE CHECKOUT CONFIRMAR
+router.post(
+  "/cliente/checkout/confirmar",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteOrderController.createOrder
+);
+
+// GET CLIENTE PEDIDOS
+router.get(
+  "/cliente/pedidos",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteOrderController.getMyOrders
+);
+
+// CLIENTE PROFILE
+
+router.get(
+  "/cliente/perfil",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteProfileController.getProfile
+);
+
+router.post(
+  "/cliente/perfil",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  uploadUserAvatar.single("avatar"),
+  updateProfileValidator,
+  clienteProfileController.postUpdateProfile
+);
+
+router.get(
+  "/cliente/pedidos/:orderId",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteOrderController.getOrderDetail
+);
+
+// CLIENTE CRUD DIRECCIONES 
+router.get(
+  "/cliente/direcciones",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteAddressController.listAddresses
+);
+
+router.post(
+  "/cliente/direcciones",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  addressValidator,
+  clienteAddressController.createAddress
+);
+
+router.get(
+  "/cliente/direcciones/:addressId/editar",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteAddressController.getEditAddress
+);
+
+router.post(
+  "/cliente/direcciones/:addressId/editar",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  addressValidator,
+  clienteAddressController.updateAddress
+);
+
+router.post(
+  "/cliente/direcciones/:addressId/eliminar",
+  authMiddleware,
+  roleMiddleware("cliente"),
+  clienteAddressController.deleteAddress
+);
+
 
 
 
