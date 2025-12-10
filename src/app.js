@@ -4,6 +4,13 @@ require("dotenv").config();
 const express = require("express");
 const { engine } = require("express-handlebars");
 
+//
+const session = require('express-session');
+const authRoutes = require('./routes/auth.routes'); 
+//
+
+
+
 const { connectDB } = require("./config/db");
 const { sessionMiddleware } = require("./config/session");
 const routes = require("./routes");
@@ -44,7 +51,14 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.use("/", routes);
+
+//
+app.use(session({ /* ... */ })); 
+
+app.use('/', authRoutes); 
+//
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

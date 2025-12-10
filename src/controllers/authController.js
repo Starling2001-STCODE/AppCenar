@@ -166,12 +166,8 @@ const authController = {
     await handleClientDeliveryRegister(req, res, "delivery");
   },
 
- async getRegisterComercio(req, res) {
-  const tipos = await CommerceType.find({ activo: true })
-    .sort({ nombre: 1 })
-    .lean();
-
-  console.log("Tipos de comercio para el formulario:", tipos);
+  async getRegisterComercio(req, res) {
+  const tipos = await CommerceType.find({ activo: true }).lean();
 
   res.render("auth/register_comercio", {
     title: "Registro Comercio - AppCenar",

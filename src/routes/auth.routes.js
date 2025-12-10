@@ -56,4 +56,20 @@ router.post(
   authController.postResetPassword
 );
 
+//
+router.get('/logout', (req, res, next) => {
+
+    req.session.destroy(err => {
+        if (err) {
+            console.error("Error al cerrar la sesión:", err);
+            return next(err);
+        }
+
+        res.clearCookie('connect.sid'); 
+
+        res.redirect('/');
+    });
+});
+//
+
 module.exports = router;
