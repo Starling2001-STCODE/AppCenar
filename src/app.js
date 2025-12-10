@@ -34,11 +34,25 @@ app.engine(
     partialsDir: path.join(__dirname, "views", "partials"),
     helpers: {
       ifEquals: function (a, b, options) {
-        return String(a) === String(b) ? options.fn(this) : options.inverse(this);
+        const isEqual = String(a) === String(b);
+
+        if (options && typeof options.fn === "function") {
+          if (isEqual) {
+            return options.fn(this);
+          }
+          if (typeof options.inverse === "function") {
+            return options.inverse(this);
+          }
+
+          return "";
+        }
+        return isEqual;
       },
     },
   })
 );
+
+
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 

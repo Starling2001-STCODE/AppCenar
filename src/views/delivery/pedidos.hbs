@@ -48,10 +48,10 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
       <h1 class="h5 mb-1">
-        Pedidos asignados
+        Mis pedidos asignados
       </h1>
       <p class="text-muted small mb-0">
-        Aquí puedes ver los pedidos que tienes asignados como delivery.
+        Listado de pedidos donde eres el delivery asignado.
       </p>
     </div>
   </div>
@@ -66,6 +66,7 @@
             <th class="text-end">Total</th>
             <th class="text-center">Productos</th>
             <th>Fecha/Hora</th>
+            <th class="text-end">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -95,19 +96,19 @@
                 </div>
               </td>
               <td>
-                {{#if (ifEquals this.estado "pendiente")}}
+                {{#ifEquals this.estado "pendiente"}}
                   <span class="badge bg-warning text-dark">Pendiente</span>
                 {{else}}
-                  {{#if (ifEquals this.estado "proceso")}}
+                  {{#ifEquals this.estado "proceso"}}
                     <span class="badge bg-info text-dark">En proceso</span>
                   {{else}}
-                    {{#if (ifEquals this.estado "completado")}}
+                    {{#ifEquals this.estado "completado"}}
                       <span class="badge bg-success">Completado</span>
                     {{else}}
                       <span class="badge bg-secondary">{{this.estado}}</span>
-                    {{/if}}
-                  {{/if}}
-                {{/if}}
+                    {{/ifEquals}}
+                  {{/ifEquals}}
+                {{/ifEquals}}
               </td>
               <td class="text-end">
                 RD$ {{this.totalFormatted}}
@@ -120,6 +121,11 @@
                   {{this.creadoEn}}
                 </span>
               </td>
+              <td class="text-end">
+                <a href="/delivery/pedidos/{{this.id}}" class="btn btn-sm btn-outline-primary">
+                    Ver detalle
+                </a>
+                </td>
             </tr>
           {{/each}}
         </tbody>

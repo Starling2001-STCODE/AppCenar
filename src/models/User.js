@@ -72,9 +72,9 @@ const userSchema = new mongoose.Schema(
         ref: "Commerce",
       },
     ],
-    deliveryOcupado: {
+    deliveryDisponible: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   {

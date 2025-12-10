@@ -1,0 +1,219 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button
+    class="btn btn-outline-primary d-inline-flex align-items-center"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}"
+    aria-controls="{{sidebarOffcanvasId}}"
+  >
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  {{#if currentUser}}
+    <div class="text-end">
+      <div class="fw-semibold">
+        {{currentUser.nombre}}
+      </div>
+      <div class="small text-muted">
+        Delivery
+      </div>
+    </div>
+  {{/if}}
+</div>
+
+<div
+  class="offcanvas offcanvas-start"
+  tabindex="-1"
+  id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h1 class="h5 mb-1">
+        Detalle del pedido
+      </h1>
+      <p class="text-muted small mb-0">
+        Pedido asignado a ti como delivery.
+      </p>
+    </div>
+    <a href="/delivery/pedidos" class="btn btn-link btn-sm">
+      ← Volver a pedidos
+    </a>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-7">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h2 class="h6 mb-3">
+        Información del pedido
+      </h2>
+
+      <p class="mb-1">
+        <span class="text-muted">Comercio:</span><br />
+        <strong>{{comercioNombre}}</strong>
+      </p>
+
+      <p class="mb-1">
+        <span class="text-muted">Estado:</span><br />
+        {{#ifEquals estado "pendiente"}}
+          <span class="badge bg-warning text-dark">Pendiente</span>
+        {{else}}
+          {{#ifEquals estado "proceso"}}
+            <span class="badge bg-info text-dark">En proceso</span>
+          {{else}}
+            {{#ifEquals estado "completado"}}
+              <span class="badge bg-success">Completado</span>
+            {{else}}
+              <span class="badge bg-secondary">{{estado}}</span>
+            {{/ifEquals}}
+          {{/ifEquals}}
+        {{/ifEquals}}
+      </p>
+
+      <p class="mb-1">
+        <span class="text-muted">Cliente:</span><br />
+        <strong>{{clienteNombreCompleto}}</strong>
+        {{#if clienteTelefono}}
+          <br />
+          <span class="small text-muted">
+            Tel: {{clienteTelefono}}
+          </span>
+        {{/if}}
+      </p>
+
+      <p class="mb-0">
+        <span class="text-muted">Fecha y hora:</span><br />
+        <span class="small text-muted">
+          {{creadoEn}}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  {{#if mostrarDireccion}}
+    <div class="card mb-3">
+      <div class="card-body">
+        <h2 class="h6 mb-3">
+          Dirección de entrega
+        </h2>
+
+        {{#if direccionAlias}}
+          <p class="mb-1">
+            <span class="text-muted">Alias:</span><br />
+            <strong>{{direccionAlias}}</strong>
+          </p>
+        {{/if}}
+
+        {{#if direccionLinea1}}
+          <p class="mb-1">
+            <span class="text-muted">Dirección:</span><br />
+            {{direccionLinea1}}
+          </p>
+        {{/if}}
+
+        {{#if direccionReferencia}}
+          <p class="mb-0">
+            <span class="text-muted">Referencia:</span><br />
+            <span class="small text-muted">
+              {{direccionReferencia}}
+            </span>
+          </p>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+
+  {{#ifEquals estado "proceso"}}
+    <form
+  method="POST"
+  action="/delivery/pedidos/{{pedidoId}}/completar"
+  class="mt-2"
+>
+      <button type="submit" class="btn btn-success w-100">
+        Marcar como completado
+      </button>
+    </form>
+  {{/ifEquals}}
+</div>
+
+
+    <div class="col-12 col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h6 mb-3">
+            Productos del pedido
+          </h2>
+
+          {{#if items.length}}
+            <div class="list-group mb-3">
+              {{#each items}}
+                <div class="list-group-item d-flex justify-content-between align-items-start">
+                  <div class="me-3">
+                    <div class="fw-semibold">
+                      {{this.nombreProducto}}
+                    </div>
+                    <div class="small text-muted">
+                      Cantidad: {{this.cantidad}}
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <div class="small text-muted">
+                      Unitario
+                    </div>
+                    <div>
+                      RD$ {{this.precioUnitarioFormatted}}
+                    </div>
+                    <div class="small text-muted">
+                      Subtotal
+                    </div>
+                    <div>
+                      RD$ {{this.subtotalFormatted}}
+                    </div>
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+          {{else}}
+            <p class="text-muted">
+              Este pedido no tiene productos asociados.
+            </p>
+          {{/if}}
+
+          <hr />
+
+          <div class="d-flex justify-content-between mb-1">
+            <span>Subtotal</span>
+            <span>RD$ {{subtotalFormatted}}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span>ITBIS</span>
+            <span>RD$ {{itbisFormatted}}</span>
+          </div>
+          <div class="d-flex justify-content-between fw-semibold">
+            <span>Total</span>
+            <span>RD$ {{totalFormatted}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,9 +24,7 @@ const { productValidator } = require("../validators/productValidators");
 const { uploadCommerceLogo } = require("../config/multer");
 const { commerceProfileValidator } = require("../validators/commerceValidators");
 const { comercioProfileController } = require("../controllers/comercio/comercioProfileController");
-
-
-
+const { deliveryOrdersController } = require("../controllers/delivery/deliveryOrdersController");
 
 
 const router = express.Router();
@@ -65,6 +63,27 @@ router.get(
   authMiddleware,
   roleMiddleware("delivery"),
   deliveryHomeController.getHome
+);
+
+router.get(
+  "/delivery/pedidos",
+  authMiddleware,
+  roleMiddleware("delivery"),
+  deliveryOrdersController.listAssigned
+);
+
+router.get(
+  "/delivery/pedidos/:id",
+  authMiddleware,
+  roleMiddleware("delivery"),
+  deliveryOrdersController.getDetail
+);
+
+router.post(
+  "/delivery/pedidos/:id/completar",
+  authMiddleware,
+  roleMiddleware("delivery"),
+  deliveryOrdersController.postComplete
 );
 
 //RUTAS DE LOS COMERCIO
