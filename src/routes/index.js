@@ -3,6 +3,14 @@ const authRoutes = require("./auth.routes");
 const { authMiddleware } = require("../middlewares/authMiddleware");
 const { roleMiddleware } = require("../middlewares/roleMiddleware");
 const { adminHomeController } = require("../controllers/admin/adminHomeController");
+const { adminClientsController } = require("../controllers/admin/adminClientsController");
+const { adminDeliveryController } = require("../controllers/admin/adminDeliveryController");
+const { adminCommercesController } = require("../controllers/admin/adminCommercesController");
+const { adminConfigController } = require("../controllers/admin/adminConfigController");
+const { adminAdminsController } = require("../controllers/admin/adminAdminsController");
+const { createAdminValidator, updateAdminValidator } = require("../validators/adminUserValidators");
+
+const { itbisValidator } = require("../validators/configValidators");
 const { clienteHomeController } = require("../controllers/cliente/clienteHomeController");
 const { deliveryHomeController } = require("../controllers/delivery/deliveryHomeController");
 const { clienteFavoritesController } = require("../controllers/cliente/clienteFavoritesController");
@@ -264,6 +272,107 @@ router.get(
   authMiddleware,
   roleMiddleware("admin"),
   adminHomeController.getDashboard
+);
+
+router.get(
+  "/admin/clientes",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminClientsController.list
+);
+
+router.post(
+  "/admin/clientes/:id/toggle-estado",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminClientsController.toggleStatus
+);
+
+router.get(
+  "/admin/delivery",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminDeliveryController.list
+);
+
+router.post(
+  "/admin/delivery/:id/toggle-estado",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminDeliveryController.toggleStatus
+);
+
+router.get(
+  "/admin/comercios",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminCommercesController.list
+);
+
+router.post(
+  "/admin/comercios/:id/toggle-estado",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminCommercesController.toggleStatus
+);
+
+router.get(
+  "/admin/configuracion",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminConfigController.getConfig
+);
+
+router.post(
+  "/admin/configuracion",
+  authMiddleware,
+  roleMiddleware("admin"),
+  itbisValidator,
+  adminConfigController.postConfig
+);
+
+router.get(
+  "/admin/administradores",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminAdminsController.list
+);
+
+router.get(
+  "/admin/administradores/nuevo",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminAdminsController.getCreate
+);
+
+router.post(
+  "/admin/administradores/nuevo",
+  authMiddleware,
+  roleMiddleware("admin"),
+  createAdminValidator,
+  adminAdminsController.postCreate
+);
+
+router.get(
+  "/admin/administradores/:id/editar",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminAdminsController.getEdit
+);
+
+router.post(
+  "/admin/administradores/:id/editar",
+  authMiddleware,
+  roleMiddleware("admin"),
+  updateAdminValidator,
+  adminAdminsController.postEdit
+);
+
+router.post(
+  "/admin/administradores/:id/toggle-estado",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminAdminsController.toggleStatus
 );
 
 

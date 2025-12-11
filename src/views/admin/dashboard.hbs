@@ -1,4 +1,130 @@
-<div class="container mt-4">
-  <h1 class="h3 mb-3">Dashboard administrador</h1>
-  <p>Bienvenido al panel administrativo de AppCenar.</p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas"
+    data-bs-target="#{{sidebarOffcanvasId}}" aria-controls="{{sidebarOffcanvasId}}">
+    <i class="bi bi-list me-2"></i>
+    Menú
+  </button>
+
+  {{#if currentUser}}
+  <div class="text-end">
+    <div class="fw-semibold">
+      {{currentUser.nombre}}
+    </div>
+    <div class="small text-muted">
+      {{currentUser.email}}
+    </div>
+  </div>
+  {{/if}}
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="{{sidebarOffcanvasId}}"
+  aria-labelledby="{{sidebarOffcanvasId}}Label">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="{{sidebarOffcanvasId}}Label">
+      {{sidebar.title}}
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    {{#if currentUser}}
+    <div class="mb-3 pb-3 border-bottom d-flex align-items-center gap-2">
+      <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+        style="width: 40px; height: 40px;">
+        <i class="bi bi-person"></i>
+      </div>
+      <div>
+        <div class="fw-semibold">{{currentUser.nombre}}</div>
+        <div class="small text-muted">{{currentUser.email}}</div>
+      </div>
+    </div>
+    {{/if}}
+
+    {{> sidebar sidebar}}
+  </div>
+</div>
+
+<div class="mt-3 container-fluid py-2">
+  <div class="row mb-3">
+    <div class="col">
+      <h1 class="h4 mb-1">Dashboard administrador</h1>
+      <p class="text-muted mb-0">Resumen general de la plataforma</p>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted mb-2">Total de pedidos</h2>
+          <p class="h3 mb-0 fw-bold">{{metrics.totalOrders}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted mb-2">Pedidos del día</h2>
+          <p class="h3 mb-0 fw-bold">{{metrics.todaysOrders}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted mb-2">Comercios</h2>
+          <p class="mb-1">
+            <span class="fw-semibold">Activos:</span>
+            {{metrics.commerces.active}}
+          </p>
+          <p class="mb-0">
+            <span class="fw-semibold">Inactivos:</span>
+            {{metrics.commerces.inactive}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted mb-2">Clientes</h2>
+          <p class="mb-1">
+            <span class="fw-semibold">Activos:</span>
+            {{metrics.clients.active}}
+          </p>
+          <p class="mb-0">
+            <span class="fw-semibold">Inactivos:</span>
+            {{metrics.clients.inactive}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted mb-2">Delivery</h2>
+          <p class="mb-1">
+            <span class="fw-semibold">Activos:</span>
+            {{metrics.deliveries.active}}
+          </p>
+          <p class="mb-0">
+            <span class="fw-semibold">Inactivos:</span>
+            {{metrics.deliveries.inactive}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6 text-muted mb-2">Total productos</h2>
+          <p class="h3 mb-0 fw-bold">{{metrics.totalProducts}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -42,6 +42,10 @@ const commerceSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    activo: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

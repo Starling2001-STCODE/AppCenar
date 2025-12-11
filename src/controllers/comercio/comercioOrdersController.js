@@ -27,17 +27,18 @@ const comercioOrderController = {
       const pedidos = pedidosDocs.map(function (o) {
         const clienteNombre = o.cliente
           ? (o.cliente.nombre || "") +
-            (o.cliente.apellido ? " " + o.cliente.apellido : "")
+          (o.cliente.apellido ? " " + o.cliente.apellido : "")
           : "Cliente";
+
         const fechaCreacion = o.createdAt
           ? o.createdAt.toLocaleString("es-DO")
           : "";
+
         return {
           id: String(o._id),
           clienteNombre,
           estado: o.estado,
-          totalFormatted:
-            o.total != null ? o.total.toFixed(2) : "0.00",
+          totalFormatted: o.total != null ? o.total.toFixed(2) : "0.00",
           cantidadProductos: o.items ? o.items.length : 0,
           fechaCreacion,
         };
@@ -86,7 +87,7 @@ const comercioOrderController = {
 
       const clienteNombre = order.cliente
         ? (order.cliente.nombre || "") +
-          (order.cliente.apellido ? " " + order.cliente.apellido : "")
+        (order.cliente.apellido ? " " + order.cliente.apellido : "")
         : "Cliente";
 
       const clienteTelefono =
@@ -94,9 +95,7 @@ const comercioOrderController = {
           ? order.cliente.telefono
           : "";
       const clienteEmail =
-        order.cliente && order.cliente.email
-          ? order.cliente.email
-          : "";
+        order.cliente && order.cliente.email ? order.cliente.email : "";
 
       const fechaCreacion = order.createdAt
         ? order.createdAt.toLocaleString("es-DO")
@@ -105,8 +104,7 @@ const comercioOrderController = {
       const items = (order.items || []).map(function (i) {
         return {
           nombre: i.nombre,
-          precioFormatted:
-            i.precio != null ? i.precio.toFixed(2) : "0.00",
+          precioFormatted: i.precio != null ? i.precio.toFixed(2) : "0.00",
         };
       });
 
@@ -127,8 +125,8 @@ const comercioOrderController = {
       }
 
       const canAssignDelivery = order.estado === "pendiente";
-      const showAddress =
-        order.estado === "proceso" && !!direccionData;
+
+      const showAddress = order.estado === "proceso" && !!direccionData;
 
       const sidebar = buildComercioSidebar("pedidos");
 
@@ -188,7 +186,7 @@ const comercioOrderController = {
       const deliveriesDocs = await User.find({
         rol: "delivery",
         activo: true,
-        deliveryOcupado: false,
+        deliveryDisponible: true,
       })
         .select("nombre apellido telefono email avatar")
         .sort({ nombre: 1 })
@@ -208,7 +206,7 @@ const comercioOrderController = {
 
       const clienteNombre = order.cliente
         ? (order.cliente.nombre || "") +
-          (order.cliente.apellido ? " " + order.cliente.apellido : "")
+        (order.cliente.apellido ? " " + order.cliente.apellido : "")
         : "Cliente";
 
       const fechaCreacion = order.createdAt
@@ -237,7 +235,7 @@ const comercioOrderController = {
     }
   },
 
-    async postAssignDelivery(req, res, next) {
+  async postAssignDelivery(req, res, next) {
     try {
       const userId = req.session.user.id;
       const orderId = req.params.orderId;
@@ -267,7 +265,7 @@ const comercioOrderController = {
       const deliveriesDocs = await User.find({
         rol: "delivery",
         activo: true,
-        deliveryOcupado: false,
+        deliveryDisponible: true,
       })
         .select("nombre apellido telefono email avatar")
         .sort({ nombre: 1 })
@@ -287,7 +285,7 @@ const comercioOrderController = {
 
       const clienteNombre = order.cliente
         ? (order.cliente.nombre || "") +
-          (order.cliente.apellido ? " " + order.cliente.apellido : "")
+        (order.cliente.apellido ? " " + order.cliente.apellido : "")
         : "Cliente";
 
       const fechaCreacion = order.createdAt
@@ -318,7 +316,7 @@ const comercioOrderController = {
         _id: deliveryId,
         rol: "delivery",
         activo: true,
-        deliveryOcupado: false,
+        deliveryDisponible: true,
       });
 
       if (!delivery) {
@@ -346,7 +344,7 @@ const comercioOrderController = {
       order.deliveryAssignedAt = new Date();
       await order.save();
 
-      delivery.deliveryOcupado = true;
+      delivery.deliveryDisponible = false;
       await delivery.save();
 
       return res.redirect("/comercio/pedidos/" + orderId);
