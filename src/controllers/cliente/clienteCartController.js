@@ -1,8 +1,7 @@
 const { Product } = require("../../models/Product");
 const { Commerce } = require("../../models/Commerce");
 const { buildClienteSidebar, SIDEBAR_OFFCANVAS_ID } = require("./clienteHomeController");
-
-const ITBIS_RATE = 0.18;
+const { getItbisRate } = require("../../services/itbisService");
 
 function getCartFromSession(req) {
   if (!req.session.cart) {
@@ -105,9 +104,10 @@ const clienteCartController = {
         return acc + item.precio;
       }, 0);
 
-      const itbis = subtotal * ITBIS_RATE;
+      const itbisRate = await getItbisRate();
+      const itbis = subtotal * itbisRate;
       const total = subtotal + itbis;
-
+      const itbisRatePercent = (itbisRate * 100).toFixed(2);
       const sidebar = buildClienteSidebar("home");
 
       res.render("cliente/carrito", {
@@ -122,6 +122,7 @@ const clienteCartController = {
         subtotalFormatted: subtotal.toFixed(2),
         itbisFormatted: itbis.toFixed(2),
         totalFormatted: total.toFixed(2),
+        itbisRatePercent,
       });
     } catch (error) {
       next(error);

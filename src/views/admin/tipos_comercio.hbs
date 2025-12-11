@@ -1,0 +1,81 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary d-inline-flex align-items-center" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#{{sidebarOffcanvasId}}">
+        <i class="bi bi-list me-2"></i> Menú
+    </button>
+
+    {{#if currentUser}}
+    <div class="text-end">
+        <div class="fw-semibold">{{currentUser.nombre}}</div>
+        <div class="small text-muted">{{currentUser.email}}</div>
+    </div>
+    {{/if}}
+</div>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="{{sidebarOffcanvasId}}">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title">{{sidebar.title}}</h5>
+        <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body">
+        {{> sidebar sidebar}}
+    </div>
+</div>
+
+<div class="mt-3 container-fluid py-2">
+    <div class="row mb-3 align-items-center">
+        <div class="col">
+            <h1 class="h4 mb-1">Tipos de Comercios</h1>
+        </div>
+        <div class="col-auto">
+            <a href="/admin/tipos-comercios/nuevo" class="btn btn-primary">
+                <i class="bi bi-plus-lg me-1"></i> Nuevo tipo
+            </a>
+        </div>
+    </div>
+
+    {{#if hasTipos}}
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each tipos}}
+                        <tr>
+                            <td>{{nombre}}</td>
+                            <td>{{descripcion}}</td>
+                            <td class="text-center">
+                                {{#if activo}}
+                                <span class="badge bg-success">Activo</span>
+                                {{else}}
+                                <span class="badge bg-secondary">Inactivo</span>
+                                {{/if}}
+                            </td>
+                            <td class="text-end">
+                                <a href="/admin/tipos-comercios/{{id}}/editar"
+                                    class="btn btn-sm btn-outline-secondary me-2">
+                                    Editar
+                                </a>
+                                <a href="/admin/tipos-comercios/{{id}}/eliminar" class="btn btn-sm btn-outline-danger">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {{else}}
+    <div class="alert alert-info">No hay tipos de comercios registrados.</div>
+    {{/if}}
+</div>

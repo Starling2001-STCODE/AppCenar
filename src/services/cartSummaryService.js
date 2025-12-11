@@ -1,6 +1,5 @@
 const { Product } = require("../models/Product");
-
-const ITBIS_RATE = 0.18;
+const { getItbisRate } = require("./itbisService");
 
 async function getCartProductsAndSummary(req) {
     const cart = req.session.cart || { items: [] };
@@ -22,7 +21,8 @@ async function getCartProductsAndSummary(req) {
         return acc + p.precio;
     }, 0);
 
-    const itbis = subtotal * ITBIS_RATE;
+    const itbisRate = await getItbisRate();
+    const itbis = subtotal * itbisRate;
     const total = subtotal + itbis;
 
     const firstCommerce = products[0].comercio || null;

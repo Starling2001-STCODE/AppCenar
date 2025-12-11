@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const bcrypt = require("bcryptjs");
 const { User } = require("../../models/User");
 const { buildAdminSidebar, SIDEBAR_OFFCANVAS_ID } = require("./adminHomeController");
 
@@ -7,17 +8,15 @@ const adminAdminsController = {
         try {
             const admins = await User.find({ rol: "admin" }).lean();
 
-            const administradores = admins.map(function (a) {
-                return {
-                    id: String(a._id),
-                    nombre: a.nombre || "",
-                    apellido: a.apellido || "",
-                    nombreCompleto: ((a.nombre || "") + " " + (a.apellido || "")).trim(),
-                    telefono: a.telefono || "",
-                    email: a.email || "",
-                    activo: !!a.activo,
-                };
-            });
+            const administradores = admins.map((a) => ({
+                id: String(a._id),
+                nombre: a.nombre || "",
+                apellido: a.apellido || "",
+                nombreCompleto: ((a.nombre || "") + " " + (a.apellido || "")).trim(),
+                telefono: a.telefono || "",
+                email: a.email || "",
+                activo: !!a.activo,
+            }));
 
             const sidebar = buildAdminSidebar("administradores");
 
@@ -83,12 +82,16 @@ const adminAdminsController = {
                 });
             }
 
+            const normalizedEmail = formData.email.trim().toLowerCase();
+            const passwordHash = bcrypt.hashSync(formData.password, 10);
+
             await User.create({
                 nombre: formData.nombre.trim(),
                 apellido: formData.apellido.trim(),
                 telefono: formData.telefono.trim(),
-                email: formData.email.trim().toLowerCase(),
-                password: formData.password,
+                email: normalizedEmail,
+                username: normalizedEmail,
+                passwordHash,
                 rol: "admin",
                 activo: true,
             });
@@ -104,9 +107,7 @@ const adminAdminsController = {
             const adminId = req.params.id;
 
             const admin = await User.findOne({ _id: adminId, rol: "admin" }).lean();
-            if (!admin) {
-                return res.redirect("/admin/administradores");
-            }
+            if (!admin) return res.redirect("/admin/administradores");
 
             const sidebar = buildAdminSidebar("administradores");
 
@@ -135,9 +136,7 @@ const adminAdminsController = {
             const adminId = req.params.id;
 
             const admin = await User.findOne({ _id: adminId, rol: "admin" });
-            if (!admin) {
-                return res.redirect("/admin/administradores");
-            }
+            if (!admin) return res.redirect("/admin/administradores");
 
             const result = validationResult(req);
 
@@ -163,13 +162,17 @@ const adminAdminsController = {
                 });
             }
 
+            const normalizedEmail = formData.email.trim().toLowerCase();
+
             admin.nombre = formData.nombre.trim();
             admin.apellido = formData.apellido.trim();
             admin.telefono = formData.telefono.trim();
-            admin.email = formData.email.trim().toLowerCase();
+            admin.email = normalizedEmail;
+            admin.username = normalizedEmail;
 
             if (formData.password && formData.password.trim().length > 0) {
-                admin.password = formData.password;
+                const passwordHash = bcrypt.hashSync(formData.password, 10);
+                admin.passwordHash = passwordHash;
             }
 
             await admin.save();
@@ -185,9 +188,7 @@ const adminAdminsController = {
             const adminId = req.params.id;
 
             const admin = await User.findOne({ _id: adminId, rol: "admin" });
-            if (!admin) {
-                return res.redirect("/admin/administradores");
-            }
+            if (!admin) return res.redirect("/admin/administradores");
 
             admin.activo = !admin.activo;
             await admin.save();

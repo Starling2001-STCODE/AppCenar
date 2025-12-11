@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <button class="btn btn-outline-primary" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#{{sidebarOffcanvasId}}">
+        <i class="bi bi-list me-2"></i> Menú
+    </button>
+</div>
+
+<div class="container mt-3">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="mb-3">Confirmar eliminación</h4>
+
+            <p>
+                ¿Seguro que deseas eliminar el tipo de comercio
+                <strong>{{nombre}}</strong>?
+            </p>
+
+            {{#if descripcion}}
+            <p class="text-muted">{{descripcion}}</p>
+            {{/if}}
+
+            <form method="POST" action="/admin/tipos-comercios/{{typeId}}/eliminar">
+                <div class="d-flex justify-content-between">
+                    <a href="/admin/tipos-comercios" class="btn btn-outline-secondary">Cancelar</a>
+                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

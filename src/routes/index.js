@@ -9,7 +9,8 @@ const { adminCommercesController } = require("../controllers/admin/adminCommerce
 const { adminConfigController } = require("../controllers/admin/adminConfigController");
 const { adminAdminsController } = require("../controllers/admin/adminAdminsController");
 const { createAdminValidator, updateAdminValidator } = require("../validators/adminUserValidators");
-
+const { adminTypesController } = require("../controllers/admin/adminTypesController");
+const { commerceTypeValidator } = require("../validators/commerceTypeValidators");
 const { itbisValidator } = require("../validators/configValidators");
 const { clienteHomeController } = require("../controllers/cliente/clienteHomeController");
 const { deliveryHomeController } = require("../controllers/delivery/deliveryHomeController");
@@ -373,6 +374,57 @@ router.post(
   authMiddleware,
   roleMiddleware("admin"),
   adminAdminsController.toggleStatus
+);
+
+router.get(
+  "/admin/tipos-comercios",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminTypesController.list
+);
+
+router.get(
+  "/admin/tipos-comercios/nuevo",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminTypesController.getCreate
+);
+
+router.post(
+  "/admin/tipos-comercios/nuevo",
+  authMiddleware,
+  roleMiddleware("admin"),
+  commerceTypeValidator,
+  adminTypesController.postCreate
+);
+
+router.get(
+  "/admin/tipos-comercios/:id/editar",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminTypesController.getEdit
+);
+
+router.post(
+  "/admin/tipos-comercios/:id/editar",
+  authMiddleware,
+  roleMiddleware("admin"),
+  commerceTypeValidator,
+  adminTypesController.postEdit
+);
+
+router.get(
+  "/admin/tipos-comercios/:id/eliminar",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminTypesController.getDeleteConfirm
+);
+
+router.post(
+  "/admin/tipos-comercios/:id/eliminar",
+  authMiddleware,
+  roleMiddleware("admin"),
+  adminTypesController.postDelete
 );
 
 
